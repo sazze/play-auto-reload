@@ -10,8 +10,16 @@ sbtPlugin := true
 
 libraryDependencies ++= Seq("org.scalaj" %% "scalaj-http" % "0.3.10")
 
-libraryDependencies ++= Seq("net.databinder" %% "unfiltered-netty-websockets" % "0.6.8")
+logLevel := Level.Debug
 
+publishTo <<= (version) { version: String =>
+   val scalasbt = "http://repo.scala-sbt.org/scalasbt/"
+   val (name, url) = if (version.contains("-SNAPSHOT"))
+     ("sbt-plugin-snapshots", scalasbt+"sbt-plugin-snapshots")
+   else
+     ("sbt-plugin-releases", scalasbt+"sbt-plugin-releases")
+   Some(Resolver.url(name, new URL(url))(Resolver.ivyStylePatterns))
+}
 
 publishMavenStyle := false
 
@@ -35,7 +43,7 @@ pomExtra := (
   </scm>
   <developers>
     <developer>
-      <id>ksmithson</id>
+      <id>smitt04</id>
       <name>Kevin Smithson</name>
       <email>ksmithson@sazze.com</email>
     </developer>
